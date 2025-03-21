@@ -1,2 +1,2 @@
-# cvscreenr
+# SnapScreen.AI
 An resume screening platform to empower students in the job market
