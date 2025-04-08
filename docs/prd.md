@@ -113,7 +113,6 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
   - IAM roles for secure resource access (S3, RDS).
   - Auto Scaling Groups to handle peak loads.
 
-
 # Doc
 
 
