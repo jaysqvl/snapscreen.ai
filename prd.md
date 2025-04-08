@@ -1,6 +1,8 @@
 # Project Overview
 A free resume screening platform where useres can upload their resumes, upload or paste a job description and we give the user insights.
 
+Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, ShadCN/UI, Java Spring Boot, PostgresSQL, AWS, Docker
+
 ## 1. Core Functionalities & Roadmap
 
 ### 1.1. User Authentication & Account Setup
@@ -8,12 +10,34 @@ A free resume screening platform where useres can upload their resumes, upload o
 - Basic user profile: track name, email, and unique user ID in the database.
 - Potential future expansions: password login, account management pages.
 
-### 1.2. Dashboard & Navigation
-- **Notion-style** UI with a sidebar listing the most recent resume scans.
-- A “New Scan” button that creates a prompt to:
-  - Upload/select a resume file (PDF/DOCX).
-  - Paste a full job description (text + job title).
-- Each new job scan appears as a separate item in the sidebar.
+### 1.2. Dashboard & Navigation (Expanded)
+- **Top Navigation Bar**  
+  - Could use **Navigation Menu** or **Menubar** from shadcn/ui.  
+  - Displays project name/logo on the left, optional “global actions” (e.g., “Download”), and a user **Avatar** (with a **Dropdown Menu** for account settings/logout) on the right.
+  - Typically remains fixed at the top.
+
+- **Sidebar**  
+  - Use the **Sidebar** component to display a vertical list of existing resume scans.
+  - A **New Scan** button (prominently placed at the top or bottom) triggers a **Dialog** or **Sheet** (slide-over) for creating a new scan.
+  - If you expect many scans, wrap the list in a **Scroll Area** to keep things tidy.
+
+- **Creating a New Scan**  
+  - When the user clicks **New Scan**, open a **Dialog** or **Sheet**.
+  - Show a **Form** with:  
+    1. **Input**: file upload (PDF/DOCX).  
+    2. **Textarea** (or **Input**): job description text.  
+    3. Optional **Input**: job title.  
+  - On submit, store the new scan’s info in the database, upload the file to AWS S3, and add it to the sidebar list.
+
+- **Main Content Area**  
+  - Displays details of the selected scan. If no scan is selected, you can show a welcome or instructions message.
+  - Optionally use **Tabs** for sub-sections (e.g., “Overview,” “Detailed Analysis,” etc.).
+  - Components like **Card**, **Table**, or **Accordion** can help organize results.
+
+- **UI Components & Utilities**  
+  - **Toast** or **Alert** for success/error messages on scan creation.  
+  - **Popover** or **Hover Card** for small tips or explanations.  
+  - **Skeleton** for loading states while fetching scan data.
 
 ### 1.3. Resume & Job Description Storage
 - **File Storage** in AWS S3 for resumes.
@@ -55,7 +79,7 @@ A free resume screening platform where useres can upload their resumes, upload o
   - Type safety and maintainability.
   - Modern ecosystem, widely adopted.
 - **UI Framework**
-  -  Shadcn/UI 
+  -  Shadcn/UI in tailwindcss
 - **Deployment**: 
   - Build your React app and serve it via AWS S3 + CloudFront, or host on Vercel/Netlify (and link to your backend).
 
