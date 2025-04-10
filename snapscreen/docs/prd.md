@@ -6,9 +6,13 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
 ## 1. Core Functionalities & Roadmap
 
 ### 1.1. User Authentication & Account Setup
-- **Google OAuth** for secure sign-up and login.
-- Basic user profile: track name, email, and unique user ID in the database.
-- Potential future expansions: password login, account management pages.
+- I already set up a firebase project and enabled email/password and google login
+  - We just need to build out the front-end of the auth page
+  - connect it to the project
+  - fully set up the signing in without google (email/password)
+  - fully set up the signing in with google
+  - Ensure this will work with the later postgres database for when we'll be tying user accounts to the resume scan history they have and their settings
+  - After this basic setup we'll add github auth
 
 ### 1.2. Dashboard & Navigation (Expanded)
 - **Top Navigation Bar**  
@@ -114,6 +118,88 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
   - Auto Scaling Groups to handle peak loads.
 
 # Doc
+The components you have to work with from shadcn are
 
+Components
+Accordion
+Alert
+Alert Dialog
+Aspect Ratio
+Avatar
+Badge
+Breadcrumb
+Button
+Calendar
+Card
+Carousel
+Chart
+Checkbox
+Collapsible
+Combobox
+Command
+Context Menu
+Data Table
+Date Picker
+Dialog
+Drawer
+Dropdown Menu
+Form
+Hover Card
+Input
+Input OTP
+Label
+Menubar
+Navigation Menu
+Pagination
+Popover
+Progress
+Radio Group
+Resizable
+Scroll Area
+Select
+Separator
+Sheet
+Sidebar
+Skeleton
+Slider
+Sonner
+Switch
+Table
+Tabs
+Textarea
+Toast
+Toggle
+Toggle Group
+Tooltip
+
+If you want to look at the documentation for any of these components
+you can go to
+https://ui.shadcn.com/docs/components/<component-name>
+
+for example, https://ui.shadcn.com/docs/components/accordion
+
+usually you can add them via
+
+npx shadcn@latest add accordion
+
+Then usage for atleast this example is
+
+```
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
 
 # Current File Structure
