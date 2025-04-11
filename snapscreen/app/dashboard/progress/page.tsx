@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator"
 import { FileText, Building, BarChart } from "lucide-react"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
 interface ActivityDay {
   date: Date;
@@ -31,8 +32,6 @@ const STATS = {
     { company: "Amazon", count: 2, averageScore: 76 },
     { company: "Meta", count: 1, averageScore: 68 }
   ] as CompanyApplication[],
-  // Activity data for the last 12 months (simplified version)
-  activityData: generateMockActivityData()
 }
 
 // Generate mock data for the heatmap
@@ -61,6 +60,13 @@ function generateMockActivityData(): ActivityDay[] {
 }
 
 export default function ProgressPage() {
+  const [activityData, setActivityData] = useState<ActivityDay[]>([]);
+  
+  // Generate activity data on client-side only
+  useEffect(() => {
+    setActivityData(generateMockActivityData());
+  }, []);
+  
   return (
     <div className="flex-1 p-6 md:p-8 lg:p-10">
       <div className="mx-auto max-w-5xl space-y-8">
@@ -116,7 +122,7 @@ export default function ProgressPage() {
             </CardHeader>
             <CardContent>
               <div className="py-4">
-                <ActivityHeatmap data={STATS.activityData} />
+                <ActivityHeatmap data={activityData} />
               </div>
             </CardContent>
           </Card>

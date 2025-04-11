@@ -7,11 +7,31 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
-import { FileBarChart } from "lucide-react"
+import { FileBarChart, Plus } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useState, useRef } from "react"
 
 export default function DashboardPage() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  
+  // Handle file selection
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // In a real app, we would process the file here
+      console.log("File selected:", file.name);
+      // You could read the file content and set it in state
+    }
+  };
+
+  // Trigger file input click
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+  
   return (
     <SidebarProvider
       style={{
@@ -21,15 +41,9 @@ export default function DashboardPage() {
       <AppSidebar />
       <SidebarInset className="flex flex-1 flex-col">
         <main className="flex flex-1 flex-col overflow-auto">
-          <div className="flex h-14 items-center border-b px-4 lg:h-[57px]">
-            <SidebarTrigger className="lg:hidden" />
-            <div className="ml-4">
-              <h1 className="text-lg font-medium">Dashboard</h1>
-            </div>
-          </div>
-          <div className="flex-1 overflow-auto p-4 md:p-6">
-            <div className="mx-auto max-w-6xl space-y-6">
-              <div className="flex flex-col gap-2">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="mx-auto max-w-6xl flex flex-col items-center justify-center space-y-6">
+              <div className="flex flex-col gap-2 text-center">
                 <h2 className="text-2xl font-bold tracking-tight">Welcome to SnapScreen</h2>
                 <p className="text-muted-foreground">
                   Select a resume scan from the sidebar or create a new one to get started.
@@ -48,6 +62,62 @@ export default function DashboardPage() {
                     Select a resume scan from the sidebar to view detailed analysis, or create a new scan to get insights on your resume.
                   </p>
                   <div className="flex gap-2">
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button>
+                          <Plus className="mr-2 h-4 w-4" />
+                          New Scan
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-6xl p-4 w-[95vw]">
+                        <DialogHeader className="pb-2">
+                          <DialogTitle>New scan</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                          <div className="space-y-2">
+                            <h3 className="text-base font-medium">Resume</h3>
+                            <div className="border rounded-lg p-3 h-[550px] flex flex-col">
+                              <textarea 
+                                placeholder="Paste resume text..." 
+                                className="flex-1 resize-none border-0 bg-transparent p-0 outline-none"
+                              />
+                              <div className="border-t pt-3 mt-2">
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  className="hidden"
+                                  accept=".pdf,.docx"
+                                  onChange={handleFileUpload}
+                                />
+                                <Button 
+                                  variant="outline" 
+                                  className="w-full"
+                                  onClick={triggerFileUpload}
+                                >
+                                  <Plus className="mr-2 h-4 w-4" />
+                                  Drag & Drop or Upload
+                                </Button>
+                                <div className="text-xs text-muted-foreground mt-1 text-center">
+                                  Supported formats: PDF, DOCX
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <h3 className="text-base font-medium">Job Description</h3>
+                            <div className="border rounded-lg p-3 h-[550px]">
+                              <textarea 
+                                placeholder="Copy and paste job description here" 
+                                className="h-full w-full resize-none border-0 bg-transparent p-0 outline-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex justify-end items-center pt-4">
+                          <Button size="lg">Scan</Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                     <Button variant="outline" asChild>
                       <Link href="/dashboard/progress">
                         View Progress

@@ -2,15 +2,23 @@
 
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { FileText, LayoutDashboard, LogIn, LineChart } from "lucide-react"
+import { FileText, LayoutDashboard, LogIn, LineChart, Sun, Moon } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { User } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 import { signOut } from "@/lib/auth"
+import { useTheme } from "next-themes"
 
 export function AppNavbar() {
   const [user, setUser] = useState<User | null>(null)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  
+  // After mounting, we can access the theme
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   useEffect(() => {
     // Set up Firebase auth state listener
@@ -22,8 +30,12 @@ export function AppNavbar() {
     return () => unsubscribe()
   }, [])
 
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className="sticky top-0 z-50 w-full border-b bg-card">
       <div className="flex h-14 items-center px-4 md:px-6">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
@@ -44,6 +56,21 @@ export function AppNavbar() {
           </Button>
         </div>
         <div className="ml-auto flex items-center gap-4">
+          {/* Theme toggle button */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="rounded-full"
+          >
+            {mounted && theme === "dark" ? (
+              <Sun className="h-[1.2rem] w-[1.2rem]" />
+            ) : (
+              <Moon className="h-[1.2rem] w-[1.2rem]" />
+            )}
+          </Button>
+          
           {user ? (
             <Avatar className="h-8 w-8">
               <AvatarImage src={user.photoURL || ""} />
