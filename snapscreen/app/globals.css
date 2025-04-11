@@ -120,3 +120,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Add custom grid cols for the contribution heatmap */
+.grid-cols-52 {
+  grid-template-columns: repeat(52, minmax(0, 1fr));
+}

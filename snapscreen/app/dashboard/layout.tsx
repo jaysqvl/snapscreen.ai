@@ -1,7 +1,16 @@
+"use client"
+
+import { AppNavbar } from "@/components/app-navbar"
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <div className="min-h-screen bg-gray-50 dark:bg-gray-900">{children}</div>
+  return (
+    <div className="flex min-h-screen w-full flex-col">
+      <AppNavbar />
+      {children}
+    </div>
+  )
 } 
