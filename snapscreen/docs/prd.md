@@ -17,7 +17,7 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
 ### 1.2. Dashboard & Navigation (Expanded)
 - **Top Navigation Bar**  
   - Could use **Navigation Menu** or **Menubar** from shadcn/ui.  
-  - Displays project name/logo on the left, optional “global actions” (e.g., “Download”), and a user **Avatar** (with a **Dropdown Menu** for account settings/logout) on the right.
+  - Displays project name/logo on the left, optional "global actions" (e.g., "Download"), and a user **Avatar** (with a **Dropdown Menu** for account settings/logout) on the right.
   - Typically remains fixed at the top.
 
 - **Sidebar**  
@@ -31,12 +31,23 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
     1. **Input**: file upload (PDF/DOCX).  
     2. **Textarea** (or **Input**): job description text.  
     3. Optional **Input**: job title.  
-  - On submit, store the new scan’s info in the database, upload the file to AWS S3, and add it to the sidebar list.
+  - On submit, store the new scan's info in the database, upload the file to AWS S3, and add it to the sidebar list.
 
 - **Main Content Area**  
-  - Displays details of the selected scan. If no scan is selected, you can show a welcome or instructions message.
-  - Optionally use **Tabs** for sub-sections (e.g., “Overview,” “Detailed Analysis,” etc.).
-  - Components like **Card**, **Table**, or **Accordion** can help organize results.
+  - Displays details of the selected scan. If no scan is selected, you can show a welcome or instructions message, potentially within a `Card` component.
+  - **When a scan is selected:**
+    - Display the Job Title (if provided) prominently, perhaps as a `Card` title.
+    - Use **Tabs** to organize the results:
+      - **"Overview" Tab:**
+        - Display the overall match score/percentage (e.g., using a `Progress` bar or numerical display).
+        - Show key metadata: Resume filename, Date scanned.
+        - Include a brief summary (e.g., "X out of Y checks passed").
+      - **"Detailed Analysis" Tab:**
+        - Utilize an **Accordion** or **Table** to list each check from section `1.4`.
+        - For each check, display its status using a **Badge** (e.g., "Pass", "Fail", "Needs Attention").
+        - Provide specific feedback, such as missing information or listing missing keywords.
+  - **Loading State:** Use **Skeleton** components to represent the layout while scan data is being fetched after selection.
+  - Components like **Card**, **Table**, or **Accordion** can help organize results within the tabs.
 
 - **UI Components & Utilities**  
   - **Toast** or **Alert** for success/error messages on scan creation.  
@@ -57,7 +68,7 @@ Core Technologies in this project are, React, Typescript, Next.js, TailwindCSS, 
 - **Date Formatting** consistency in work/education history.
 - **Education Check**: confirm presence of relevant degree or credentials.
 - **File Type** check/guidance (PDF vs. DOCX).
-- **Hard & Soft Skills**: parse job description for keywords (e.g., “Java,” “teamwork”) and verify presence in resume text.
+- **Hard & Soft Skills**: parse job description for keywords (e.g., "Java," "teamwork") and verify presence in resume text.
 - **Formatting Quick Checks**: basic layout, margin, or font consistency.
 
 ### 1.5. Display of Scan Results

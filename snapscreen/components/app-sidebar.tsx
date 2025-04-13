@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { FileText, Home, Plus, User } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { useCallback, useMemo, useState, useRef } from "react"
+import { useCallback, useMemo, useState, useRef, Dispatch, SetStateAction } from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -30,9 +30,13 @@ const RESUME_SCANS = [
   { id: "5", title: "UX Designer", date: "2023-06-08", score: 88 },
 ]
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onScanSelect?: Dispatch<SetStateAction<string | null>>;
+  selectedScanId?: string | null;
+}
+
+export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [selectedScanId, setSelectedScanId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -48,10 +52,15 @@ export function AppSidebar() {
 
   // Handle scan selection
   const handleSelectScan = useCallback((scanId: string) => {
-    setSelectedScanId(scanId)
-    // Here you would also trigger any necessary data fetching
-    // or state updates in a real application
-  }, [])
+    if (onScanSelect) {
+      // If the scan is already selected, deselect it (set to null)
+      if (selectedScanId === scanId) {
+        onScanSelect(null);
+      } else {
+        onScanSelect(scanId);
+      }
+    }
+  }, [onScanSelect, selectedScanId])
 
   // Handle file selection
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
