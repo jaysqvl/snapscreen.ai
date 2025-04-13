@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { FileText, LayoutDashboard, LogIn, LineChart, Sun, Moon } from "lucide-react"
+import { FileText, LayoutDashboard, LogIn, LineChart, Sun, Moon, Info } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { User } from "firebase/auth"
@@ -56,6 +56,14 @@ export function AppNavbar() {
           </Button>
         </div>
         <div className="ml-auto flex items-center gap-4">
+          {/* Process button */}
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/process">
+              <Info className="mr-2 h-4 w-4" />
+              Process
+            </Link>
+          </Button>
+          
           {/* Theme toggle button */}
           <Button 
             variant="ghost" 
