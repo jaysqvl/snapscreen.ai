@@ -57,7 +57,9 @@ public class ResumeController {
             // Return the object key and URL
             Map<String, String> response = new HashMap<>();
             response.put("objectKey", objectKey);
-            response.put("url", presignedUrl);
+            if (presignedUrl != null) {
+                response.put("url", presignedUrl);
+            }
             response.put("filename", file.getOriginalFilename());
             
             return ResponseEntity.ok(response);
@@ -87,7 +89,9 @@ public class ResumeController {
         
         Map<String, String> result = new HashMap<>();
         result.put("objectKey", objectKey);
-        result.put("url", presignedUrl);
+        if (presignedUrl != null) {
+            result.put("url", presignedUrl);
+        }
         result.put("filename", filename);
         
         return ResponseEntity.ok(result);
@@ -112,7 +116,12 @@ public class ResumeController {
     @GetMapping("/url")
     public ResponseEntity<Map<String, String>> getResumeUrl(@RequestParam String objectKey) {
         String presignedUrl = s3StorageService.getPreSignedUrl(objectKey, 60);
-        return ResponseEntity.ok(Map.of("url", presignedUrl));
+        if (presignedUrl == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Failed to generate pre-signed URL"));
+        }
+        Map<String, String> result = new HashMap<>();
+        result.put("url", presignedUrl);
+        return ResponseEntity.ok(result);
     }
     
     /**

@@ -14,20 +14,27 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { FileText, Home, Plus, User } from "lucide-react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { FileText, Home, Plus, User, Edit, Trash, MoreVertical } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { useCallback, useMemo, useState, useRef, Dispatch, SetStateAction } from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 
 // Demo scans - replace with actual data in production
 const RESUME_SCANS = [
-  { id: "1", title: "Software Engineer Resume", date: "2023-10-15", score: 82 },
-  { id: "2", title: "Product Manager Application", date: "2023-09-22", score: 75 },
-  { id: "3", title: "Data Scientist Position", date: "2023-08-30", score: 68 },
-  { id: "4", title: "Frontend Developer", date: "2023-07-14", score: 91 },
-  { id: "5", title: "UX Designer", date: "2023-06-08", score: 88 },
+  { id: "1", title: "Software Engineer Resume", date: "2023-10-15", score: 82, company: "Google" },
+  { id: "2", title: "Product Manager Application", date: "2023-09-22", score: 75, company: "Microsoft" },
+  { id: "3", title: "Data Scientist Position", date: "2023-08-30", score: 68, company: "Amazon" },
+  { id: "4", title: "Frontend Developer", date: "2023-07-14", score: 91, company: "Meta" },
+  { id: "5", title: "UX Designer", date: "2023-06-08", score: 88, company: "Apple" },
 ]
 
 interface AppSidebarProps {
@@ -39,6 +46,10 @@ export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [scanToEdit, setScanToEdit] = useState<typeof RESUME_SCANS[0] | null>(null)
+  const [scanToDelete, setScanToDelete] = useState<string | null>(null)
 
   // Filter scans based on search
   const filteredScans = useMemo(() => {
@@ -75,6 +86,33 @@ export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
   // Trigger file input click
   const triggerFileUpload = () => {
     fileInputRef.current?.click();
+  };
+
+  // Handle edit scan
+  const handleEditScan = (scan: typeof RESUME_SCANS[0], e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the scan selection
+    setScanToEdit(scan);
+    setEditDialogOpen(true);
+  };
+
+  // Handle delete scan
+  const handleDeleteClick = (scanId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the scan selection
+    setScanToDelete(scanId);
+    setDeleteAlertOpen(true);
+  };
+
+  // Confirm delete scan
+  const confirmDelete = () => {
+    if (scanToDelete) {
+      // In a real app, we would call an API to delete the scan
+      console.log("Deleting scan:", scanToDelete);
+      // For now, just log it
+      
+      // Close the dialog
+      setDeleteAlertOpen(false);
+      setScanToDelete(null);
+    }
   };
 
   return (
@@ -164,14 +202,15 @@ export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
                         )}
                         onClick={() => handleSelectScan(scan.id)}
                       >
-                        <div className="flex w-full cursor-pointer items-center">
+                        <div className="flex w-full cursor-pointer items-center relative">
                           <FileText className="h-4 w-4 shrink-0" />
                           <div className="ml-2 flex flex-1 flex-col items-start overflow-hidden">
                             <span className="truncate font-medium w-full">{scan.title}</span>
+                            <div className="text-sm font-medium text-primary/70 truncate w-full">{scan.company}</div>
                             <div className="flex w-full items-center justify-between pt-0">
                               <span className="text-xs text-muted-foreground">{scan.date}</span>
                               <span className={cn(
-                                "text-xs font-medium",
+                                "text-xs font-medium w-10 text-right",
                                 scan.score >= 80 ? "text-green-500" : 
                                 scan.score >= 70 ? "text-yellow-500" : "text-red-500"
                               )}>
@@ -179,6 +218,28 @@ export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
                               </span>
                             </div>
                           </div>
+                          {selectedScanId === scan.id && (
+                            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem onClick={(e) => handleEditScan(scan, e)}>
+                                    <Edit className="mr-2 h-4 w-4" /> Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem 
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={(e) => handleDeleteClick(scan.id, e)}
+                                  >
+                                    <Trash className="mr-2 h-4 w-4" /> Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          )}
                         </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -193,6 +254,60 @@ export function AppSidebar({ onScanSelect, selectedScanId }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      {/* Edit Scan Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Scan</DialogTitle>
+            <DialogDescription>
+              Update the scan details below.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="title" className="text-right">Title</label>
+              <Input
+                id="title"
+                value={scanToEdit?.title || ""}
+                className="col-span-3"
+                onChange={(e) => setScanToEdit(prev => prev ? {...prev, title: e.target.value} : prev)}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="company" className="text-right">Company</label>
+              <Input
+                id="company"
+                value={scanToEdit?.company || ""}
+                className="col-span-3"
+                onChange={(e) => setScanToEdit(prev => prev ? {...prev, company: e.target.value} : prev)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setEditDialogOpen(false)}>Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteAlertOpen} onOpenChange={setDeleteAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this scan
+              and remove it from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setScanToDelete(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Sidebar>
   )
 } 
