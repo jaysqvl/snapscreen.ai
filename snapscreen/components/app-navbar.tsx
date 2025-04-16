@@ -2,13 +2,21 @@
 
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { FileText, LayoutDashboard, LogIn, LineChart, Sun, Moon, Info } from "lucide-react"
+import { FileText, LayoutDashboard, LogIn, LineChart, Sun, Moon, Info, LogOut } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { User } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 import { signOut } from "@/lib/auth"
 import { useTheme } from "next-themes"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function AppNavbar() {
   const [user, setUser] = useState<User | null>(null)
@@ -32,6 +40,10 @@ export function AppNavbar() {
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark")
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
   }
 
   return (
@@ -80,10 +92,31 @@ export function AppNavbar() {
           </Button>
           
           {user ? (
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.photoURL || ""} />
-              <AvatarFallback>{user.displayName?.[0] || user.email?.[0] || "U"}</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user.photoURL || ""} alt={user.displayName || "User"} />
+                    <AvatarFallback>{user.displayName?.[0] || user.email?.[0] || "U"}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.displayName || "User"}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button size="sm" asChild>
               <Link href="/auth">
