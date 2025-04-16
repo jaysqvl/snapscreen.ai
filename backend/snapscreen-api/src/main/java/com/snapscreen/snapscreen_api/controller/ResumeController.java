@@ -4,6 +4,7 @@ import com.snapscreen.snapscreen_api.service.S3StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,14 +26,15 @@ public class ResumeController {
 
     /**
      * Upload a resume file for a user (replaces any existing resume)
-     * @param userId The Firebase user ID
      * @param file The resume file to upload
      * @return Object with the S3 object key and a pre-signed URL for the uploaded file
      */
-    @PostMapping("/{userId}/upload")
+    @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadResume(
-            @PathVariable String userId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) {
+        
+        String userId = (String) authentication.getPrincipal();
         
         try {
             // Validate the file
@@ -71,12 +73,13 @@ public class ResumeController {
     }
     
     /**
-     * Get a user's resume
-     * @param userId The Firebase user ID
+     * Get the current user's resume
      * @return The resume information if it exists
      */
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserResume(@PathVariable String userId) {
+    @GetMapping
+    public ResponseEntity<?> getUserResume(Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
+        
         Optional<String> objectKeyOpt = s3StorageService.getUserResume(userId);
         
         if (objectKeyOpt.isEmpty()) {
@@ -98,12 +101,12 @@ public class ResumeController {
     }
     
     /**
-     * Check if a user has a resume
-     * @param userId The Firebase user ID
+     * Check if the current user has a resume
      * @return Status indicating if the user has a resume
      */
-    @GetMapping("/{userId}/exists")
-    public ResponseEntity<Map<String, Boolean>> hasResume(@PathVariable String userId) {
+    @GetMapping("/exists")
+    public ResponseEntity<Map<String, Boolean>> hasResume(Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
         boolean hasResume = s3StorageService.hasResume(userId);
         return ResponseEntity.ok(Map.of("hasResume", hasResume));
     }
@@ -125,12 +128,12 @@ public class ResumeController {
     }
     
     /**
-     * Delete a user's resume
-     * @param userId The Firebase user ID
+     * Delete the current user's resume
      * @return Empty response with OK status
      */
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUserResume(@PathVariable String userId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUserResume(Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
         s3StorageService.deleteExistingResume(userId);
         return ResponseEntity.ok().build();
     }

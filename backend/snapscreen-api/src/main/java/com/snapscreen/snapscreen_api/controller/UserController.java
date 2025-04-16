@@ -5,6 +5,7 @@ import com.google.firebase.auth.UserRecord;
 import com.snapscreen.snapscreen_api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,22 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    /**
+     * Get the current authenticated user's information
+     * @param authentication Current authenticated user
+     * @return User record for the authenticated user
+     */
+    @GetMapping("/me")
+    public ResponseEntity<UserRecord> getCurrentUser(Authentication authentication) {
+        try {
+            String uid = (String) authentication.getPrincipal();
+            UserRecord user = userService.getUserById(uid);
+            return ResponseEntity.ok(user);
+        } catch (FirebaseAuthException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{uid}")
