@@ -28,8 +28,8 @@ public class SetDefaultAdmin {
         return args -> {
             // List of admin user IDs
             List<String> defaultAdminUids = Arrays.asList(
-                "zmqHybv5WtdfrrC4swWDD8QZHuh2",  // Original admin
-                "2YtqhaX6fxcKV9lvWWiIW5A0P2p2"   // Your Google account
+                "zmqHybv5WtdfrrC4swWDD8QZHuh2", // Test User
+                "2YtqhaX6fxcKV9lvWWiIW5A0P2p2" // Google Account
             );
             
             System.out.println("Setting default admin users: " + defaultAdminUids);
