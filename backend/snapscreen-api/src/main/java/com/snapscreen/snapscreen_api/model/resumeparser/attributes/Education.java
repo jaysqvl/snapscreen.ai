@@ -117,6 +117,8 @@ public class Education implements Serializable {
                 ", fieldOfStudy='" + fieldOfStudy + '\'' +
                 ", period='" + startDate + " - " + endDate + '\'' +
                 ", gpa='" + gpa + '\'' +
+                ", activities=[" + (activities.isEmpty() ? "" : String.join(", ", activities)) + "]" +
+                ", descriptions=[" + (descriptions.isEmpty() ? "" : String.join(", ", descriptions)) + "]" +
                 '}';
     }
 }
