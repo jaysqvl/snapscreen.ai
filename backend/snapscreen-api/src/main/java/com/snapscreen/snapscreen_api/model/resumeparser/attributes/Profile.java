@@ -1,6 +1,8 @@
 package com.snapscreen.snapscreen_api.model.resumeparser.attributes;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents the personal/profile information section of a parsed resume.
@@ -14,12 +16,13 @@ public class Profile implements Serializable {
     private String email;
     private String phone;
     private String location;
-    private String website;
-    private String linkedInUrl;
     private String summary;
     
+    private List<String> links;
+
     // Default constructor
     public Profile() {
+        this.links = new ArrayList<>();
     }
     
     // Getters and setters
@@ -55,20 +58,12 @@ public class Profile implements Serializable {
         this.location = location;
     }
     
-    public String getWebsite() {
-        return website;
+    public List<String> getLinks() {
+        return links;
     }
     
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-    
-    public String getLinkedInUrl() {
-        return linkedInUrl;
-    }
-    
-    public void setLinkedInUrl(String linkedInUrl) {
-        this.linkedInUrl = linkedInUrl;
+    public void setLinks(List<String> links) {
+        this.links = links;
     }
     
     public String getSummary() {
@@ -86,8 +81,7 @@ public class Profile implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", location='" + location + '\'' +
-                ", website='" + website + '\'' +
-                ", linkedInUrl='" + linkedInUrl + '\'' +
+                ", links=" + String.join(", ", links) +
                 ", summary='" + (summary != null ? summary.substring(0, Math.min(summary.length(), 50)) + "..." : null) + '\'' +
                 '}';
     }
