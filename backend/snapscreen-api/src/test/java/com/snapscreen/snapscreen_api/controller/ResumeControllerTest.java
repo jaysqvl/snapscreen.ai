@@ -1,13 +1,20 @@
 package com.snapscreen.snapscreen_api.controller;
 
+import com.snapscreen.snapscreen_api.config.TestSecurityConfig;
 import com.snapscreen.snapscreen_api.service.S3StorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -22,15 +29,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Import(TestSecurityConfig.class)
 public class ResumeControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private S3StorageService s3StorageService;
 
     @InjectMocks
-    private ResumeController resumeController;
+    private TestResumeController testResumeController;
 
     private final String TEST_USER_ID = "testUserId";
     private final String TEST_OBJECT_KEY = "resumes/testUserId/resume.pdf";
@@ -39,13 +51,14 @@ public class ResumeControllerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(resumeController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(testResumeController).build();
         
         // Default behavior for mocks
         when(s3StorageService.getPreSignedUrl(anyString(), anyInt())).thenReturn(TEST_PRESIGNED_URL);
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testUploadResume_Success() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -65,6 +78,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testUploadResume_NoUrl() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -85,6 +99,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testUploadResume_EmptyFile() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -100,6 +115,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testUploadResume_InvalidFileType() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file",
@@ -115,6 +131,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testGetUserResume_Success() throws Exception {
         when(s3StorageService.getUserResume(TEST_USER_ID)).thenReturn(Optional.of(TEST_OBJECT_KEY));
 
@@ -127,6 +144,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testGetUserResume_NoUrl() throws Exception {
         when(s3StorageService.getUserResume(TEST_USER_ID)).thenReturn(Optional.of(TEST_OBJECT_KEY));
         when(s3StorageService.getPreSignedUrl(eq(TEST_OBJECT_KEY), anyInt())).thenReturn(null);
@@ -140,6 +158,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testGetUserResume_NotFound() throws Exception {
         when(s3StorageService.getUserResume(TEST_USER_ID)).thenReturn(Optional.empty());
 
@@ -149,6 +168,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testHasResume_True() throws Exception {
         when(s3StorageService.hasResume(TEST_USER_ID)).thenReturn(true);
 
@@ -159,6 +179,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testHasResume_False() throws Exception {
         when(s3StorageService.hasResume(TEST_USER_ID)).thenReturn(false);
 
@@ -169,6 +190,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testGetResumeUrl_Success() throws Exception {
         mockMvc.perform(get("/api/resumes/url")
                 .param("objectKey", TEST_OBJECT_KEY)
@@ -178,6 +200,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testGetResumeUrl_Null() throws Exception {
         when(s3StorageService.getPreSignedUrl(eq(TEST_OBJECT_KEY), anyInt())).thenReturn(null);
 
@@ -189,6 +212,7 @@ public class ResumeControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "testUserId", roles = "USER")
     public void testDeleteUserResume() throws Exception {
         doNothing().when(s3StorageService).deleteExistingResume(TEST_USER_ID);
 

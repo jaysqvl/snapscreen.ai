@@ -14,6 +14,12 @@ public class ResumeSection {
     private ResumeLine titleLine;              // The line containing the section title
     private List<ResumeLine> contentLines;     // Content lines in this section
     
+    // Default constructor
+    public ResumeSection() {
+        this.title = "";
+        this.contentLines = new ArrayList<>();
+    }
+    
     // Constructor
     public ResumeSection(ResumeLine titleLine) {
         this.titleLine = titleLine;
@@ -95,7 +101,9 @@ public class ResumeSection {
     
     public void setTitleLine(ResumeLine titleLine) {
         this.titleLine = titleLine;
-        this.title = titleLine.getLineContent().trim();
+        if (titleLine != null) {
+            this.title = titleLine.getLineContent().trim();
+        }
     }
     
     public List<ResumeLine> getContentLines() {
@@ -104,6 +112,21 @@ public class ResumeSection {
     
     public void setContentLines(List<ResumeLine> contentLines) {
         this.contentLines = contentLines;
+    }
+    
+    // Alias for getContentLines() - for compatibility
+    public List<ResumeLine> getLines() {
+        return contentLines;
+    }
+    
+    // Alias for setContentLines() - for compatibility
+    public void setLines(List lines) {
+        this.contentLines = lines;
+    }
+    
+    // Method to set the name (alias for setTitle)
+    public void setName(String name) {
+        this.title = name;
     }
     
     @Override
