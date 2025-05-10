@@ -1,6 +1,5 @@
 package com.snapscreen.snapscreen_api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +27,6 @@ public class S3StorageService {
     // Base folder for all resumes
     private static final String RESUME_FOLDER = "resumes/";
 
-    @Autowired
     public S3StorageService(S3Client s3Client) {
         this.s3Client = s3Client;
         

@@ -4,7 +4,6 @@ import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Profile;
 import com.snapscreen.snapscreen_api.parser.scoring.FeatureScoringSystem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class ProfileExtractor {
     private static final Pattern URL_WWW_PATTERN = Pattern.compile("www\\.\\S+\\.\\S+");
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s\\.]+$");
     
-    @Autowired
     public ProfileExtractor(FeatureScoringSystem scoringSystem) {
         this.scoringSystem = scoringSystem;
     }

@@ -1,7 +1,6 @@
 package com.snapscreen.snapscreen_api.controller;
 
 import com.snapscreen.snapscreen_api.service.S3StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,6 @@ public class ResumeController {
 
     private final S3StorageService s3StorageService;
 
-    @Autowired
     public ResumeController(S3StorageService s3StorageService) {
         this.s3StorageService = s3StorageService;
     }

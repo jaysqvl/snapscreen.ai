@@ -15,7 +15,6 @@ import com.snapscreen.snapscreen_api.parser.extraction.PdfExtractor;
 import com.snapscreen.snapscreen_api.parser.extraction.ProfileExtractor;
 import com.snapscreen.snapscreen_api.parser.extraction.SectionGrouper;
 import com.snapscreen.snapscreen_api.parser.extraction.SkillsExtractor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -41,7 +40,6 @@ public class ResumeParser {
     private final EducationExtractor educationExtractor;
     private final SkillsExtractor skillsExtractor;
     
-    @Autowired
     public ResumeParser(
             PdfExtractor pdfExtractor,
             LineGrouper lineGrouper,

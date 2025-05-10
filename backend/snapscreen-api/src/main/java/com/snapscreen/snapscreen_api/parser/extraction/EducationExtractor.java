@@ -5,7 +5,6 @@ import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Education;
 import com.snapscreen.snapscreen_api.parser.scoring.FeatureScoringSystem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ public class EducationExtractor {
     // GPA pattern
     private static final Pattern GPA_PATTERN = Pattern.compile("[0-4]\\.(\\d{1,2})");
     
-    @Autowired
     public EducationExtractor(FeatureScoringSystem scoringSystem, SubsectionExtractor subsectionExtractor) {
         this.scoringSystem = scoringSystem;
         this.subsectionExtractor = subsectionExtractor;

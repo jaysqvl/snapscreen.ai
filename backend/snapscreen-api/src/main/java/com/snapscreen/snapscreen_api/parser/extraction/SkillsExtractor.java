@@ -4,7 +4,6 @@ import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Skills;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class SkillsExtractor {
         "certification", "certificate", "certified", "license", "accredited"
     );
     
-    @Autowired
     public SkillsExtractor(SubsectionExtractor subsectionExtractor) {
         this.subsectionExtractor = subsectionExtractor;
     }

@@ -3,7 +3,6 @@ package com.snapscreen.snapscreen_api.parser.scoring;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
