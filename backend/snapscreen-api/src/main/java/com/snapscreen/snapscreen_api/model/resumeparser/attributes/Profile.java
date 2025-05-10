@@ -17,6 +17,7 @@ public class Profile implements Serializable {
     private String phone;
     private String location;
     private String summary;
+    private String website;
     
     private List<String> links;
 
@@ -66,6 +67,14 @@ public class Profile implements Serializable {
         this.links = links;
     }
     
+    public String getWebsite() {
+        return website;
+    }
+    
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+    
     public String getSummary() {
         return summary;
     }
@@ -81,6 +90,7 @@ public class Profile implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", location='" + location + '\'' +
+                ", website='" + website + '\'' +
                 ", links=" + String.join(", ", links) +
                 ", summary='" + (summary != null ? summary.substring(0, Math.min(summary.length(), 50)) + "..." : null) + '\'' +
                 '}';

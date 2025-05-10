@@ -2,6 +2,7 @@ package com.snapscreen.snapscreen_api.model.resumeparser;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Education;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Experience;
+import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Skills;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class ParsedResume implements Serializable {
     // Resume sections
     private List<Experience> experiences = new ArrayList<>();
     private List<Education> educations = new ArrayList<>();
-    private List<String> skills = new ArrayList<>();
+    private Skills skills = new Skills();
     private List<Map<String, String>> projects = new ArrayList<>();
     private List<Map<String, String>> certifications = new ArrayList<>();
     
@@ -53,7 +54,17 @@ public class ParsedResume implements Serializable {
     
     // Add a skill
     public void addSkill(String skill) {
-        this.skills.add(skill);
+        this.skills.addSkill(skill);
+    }
+    
+    // Add a language
+    public void addLanguage(String language) {
+        this.skills.addLanguage(language);
+    }
+    
+    // Add a certification to skills
+    public void addSkillCertification(String certification) {
+        this.skills.addCertification(certification);
     }
     
     // Add a project
@@ -136,11 +147,11 @@ public class ParsedResume implements Serializable {
         this.educations = educations;
     }
     
-    public List<String> getSkills() {
+    public Skills getSkills() {
         return skills;
     }
     
-    public void setSkills(List<String> skills) {
+    public void setSkills(Skills skills) {
         this.skills = skills;
     }
     

@@ -117,6 +117,19 @@ public class ResumeLine {
         isSectionTitle = sectionTitle;
     }
     
+    // Add getText() method - alias for getLineContent()
+    public String getText() {
+        return getLineContent();
+    }
+    
+    // Add setText() method 
+    public void setText(String text) {
+        // Clear existing items and add a new one with the text
+        this.textItems.clear();
+        TextItem item = new TextItem(text, 0, 0, 0, false, false, this.pageNumber);
+        this.textItems.add(item);
+    }
+    
     @Override
     public String toString() {
         return "ResumeLine{" +

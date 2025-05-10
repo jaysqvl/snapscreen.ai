@@ -1,12 +1,15 @@
 package com.snapscreen.snapscreen_api.integration;
 
+import com.snapscreen.snapscreen_api.config.TestSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
 @Tag("integration")
+@Import(TestSecurityConfig.class)
 public class ResumeIntegrationTest {
 
     @Autowired
@@ -39,6 +43,7 @@ public class ResumeIntegrationTest {
      * 4. Delete it
      */
     @Test
+    @WithMockUser(username = "integration_test_user", roles = "USER")
     public void testResumeFullFlow() throws Exception {
         // Create a test PDF file
         MockMultipartFile testResume = new MockMultipartFile(
@@ -86,6 +91,7 @@ public class ResumeIntegrationTest {
      * Tests the URL generation for resumes
      */
     @Test
+    @WithMockUser(username = "integration_test_user", roles = "USER")
     public void testGetResumeUrl() throws Exception {
         // This assumes there's a sample object in the S3 bucket
         // If needed, you could upload a file first, then test URL generation
@@ -103,6 +109,7 @@ public class ResumeIntegrationTest {
      * Tests error cases with real services
      */
     @Test
+    @WithMockUser(username = "integration_test_user", roles = "USER")
     public void testUploadInvalidFile() throws Exception {
         // Test with empty file
         MockMultipartFile emptyFile = new MockMultipartFile(

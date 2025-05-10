@@ -1,11 +1,14 @@
 package com.snapscreen.snapscreen_api.integration;
 
+import com.snapscreen.snapscreen_api.config.TestSecurityConfig;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
 @Tag("integration")
+@Import(TestSecurityConfig.class)
 public class UserIntegrationTest {
 
     @Autowired
@@ -44,6 +48,7 @@ public class UserIntegrationTest {
      * Note: This requires a real user to exist in Firebase
      */
     @Test
+    @WithMockUser(username = "zmqHybv5WtdfrrC4swWDD8QZHuh2", roles = "ADMIN")
     public void testGetUserById() throws Exception {
         mockMvc.perform(get("/api/users/{uid}", TEST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -55,6 +60,7 @@ public class UserIntegrationTest {
      * Tests listing users from Firebase
      */
     @Test
+    @WithMockUser(username = "zmqHybv5WtdfrrC4swWDD8QZHuh2", roles = "ADMIN")
     public void testListUsers() throws Exception {
         mockMvc.perform(get("/api/users")
                 .param("maxResults", "10")
@@ -67,6 +73,7 @@ public class UserIntegrationTest {
      * Note: This modifies a real user's claims in Firebase
      */
     @Test
+    @WithMockUser(username = "zmqHybv5WtdfrrC4swWDD8QZHuh2", roles = "ADMIN")
     public void testSetAdminRole() throws Exception {
         // First make the user an admin
         mockMvc.perform(put("/api/users/{uid}/admin", TEST_USER_ID)
@@ -86,6 +93,7 @@ public class UserIntegrationTest {
      * Note: This modifies a real user's claims in Firebase
      */
     @Test
+    @WithMockUser(username = "zmqHybv5WtdfrrC4swWDD8QZHuh2", roles = "ADMIN")
     public void testSetCustomClaims() throws Exception {
         // Set custom claim
         Map<String, Object> claims = new HashMap<>();
