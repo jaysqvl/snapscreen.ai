@@ -3,7 +3,8 @@ package com.snapscreen.snapscreen_api.parser.extraction;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Profile;
-import com.snapscreen.snapscreen_api.parser.scoring.FeatureScoringSystem;
+import com.snapscreen.snapscreen_api.parser.extraction.lib.FeatureScoringSystem;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

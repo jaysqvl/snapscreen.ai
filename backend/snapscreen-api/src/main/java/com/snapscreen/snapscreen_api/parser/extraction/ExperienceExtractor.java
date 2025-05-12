@@ -4,7 +4,8 @@ import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Experience;
-import com.snapscreen.snapscreen_api.parser.scoring.FeatureScoringSystem;
+import com.snapscreen.snapscreen_api.parser.extraction.lib.FeatureScoringSystem;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

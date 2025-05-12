@@ -1,4 +1,4 @@
-package com.snapscreen.snapscreen_api.parser.scoring;
+package com.snapscreen.snapscreen_api.parser.extraction.lib;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import org.springframework.stereotype.Component;
