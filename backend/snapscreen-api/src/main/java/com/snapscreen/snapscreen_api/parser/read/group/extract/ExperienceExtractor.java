@@ -1,20 +1,18 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read.group.extract;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Experience;
-import com.snapscreen.snapscreen_api.parser.scoring.FeatureScoringSystem;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.snapscreen.snapscreen_api.parser.read.group.extract.scoring.FeatureScoringSystem;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Extracts work experience information from resume sections.
@@ -51,7 +49,6 @@ public class ExperienceExtractor {
         "VP", "Volunteer", "Webmaster", "Worker"
     );
     
-    @Autowired
     public ExperienceExtractor(FeatureScoringSystem scoringSystem, SubsectionExtractor subsectionExtractor) {
         this.scoringSystem = scoringSystem;
         this.subsectionExtractor = subsectionExtractor;

@@ -120,7 +120,7 @@ public class ResumeSection {
     }
     
     // Alias for setContentLines() - for compatibility
-    public void setLines(List lines) {
+    public void setLines(List<ResumeLine> lines) {
         this.contentLines = lines;
     }
     

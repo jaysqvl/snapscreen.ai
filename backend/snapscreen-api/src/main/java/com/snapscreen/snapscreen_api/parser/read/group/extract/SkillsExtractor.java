@@ -1,10 +1,10 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read.group.extract;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Skills;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ public class SkillsExtractor {
     private final SubsectionExtractor subsectionExtractor;
     
     // Common skill keywords to identify technical skills
-    private static final List<String> TECHNICAL_SKILL_KEYWORDS = Arrays.asList(
-        "programming", "languages", "technical", "technologies", "tools", "frameworks", "software"
-    );
+//    private static final List<String> TECHNICAL_SKILL_KEYWORDS = Arrays.asList(
+//        "programming", "languages", "technical", "technologies", "tools", "frameworks", "software"
+//    );
     
     // Common language keywords to identify language skills
     private static final List<String> LANGUAGE_SKILL_KEYWORDS = Arrays.asList(
@@ -40,7 +40,6 @@ public class SkillsExtractor {
         "certification", "certificate", "certified", "license", "accredited"
     );
     
-    @Autowired
     public SkillsExtractor(SubsectionExtractor subsectionExtractor) {
         this.subsectionExtractor = subsectionExtractor;
     }

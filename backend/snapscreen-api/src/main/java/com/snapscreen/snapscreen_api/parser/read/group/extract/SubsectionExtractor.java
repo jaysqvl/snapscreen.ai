@@ -1,7 +1,6 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read.group.extract;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
-import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,9 +1,8 @@
-package com.snapscreen.snapscreen_api.parser.scoring;
+package com.snapscreen.snapscreen_api.parser.read.group.extract.scoring;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
