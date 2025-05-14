@@ -1,8 +1,7 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ import java.util.Map;
  * This is equivalent to step 1 of the open-resume solution.
  */
 @Component
-public class PdfExtractor {
+public class PdfReader {
 
     /**
      * Extract TextItems from a PDF file
@@ -48,7 +47,6 @@ public class PdfExtractor {
         List<TextItem> textItems = new ArrayList<>();
         
         for (int i = 0; i < document.getNumberOfPages(); i++) {
-            PDPage page = document.getPage(i);
             int pageNumber = i + 1;
             
             CustomTextStripper stripper = new CustomTextStripper(pageNumber);

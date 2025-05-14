@@ -1,4 +1,4 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read.group;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;

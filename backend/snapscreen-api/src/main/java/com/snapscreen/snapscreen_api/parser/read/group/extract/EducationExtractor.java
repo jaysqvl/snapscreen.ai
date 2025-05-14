@@ -1,10 +1,10 @@
-package com.snapscreen.snapscreen_api.parser.extraction;
+package com.snapscreen.snapscreen_api.parser.read.group.extract;
 
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeLine;
 import com.snapscreen.snapscreen_api.model.resumeparser.ResumeSection;
 import com.snapscreen.snapscreen_api.model.resumeparser.TextItem;
 import com.snapscreen.snapscreen_api.model.resumeparser.attributes.Education;
-import com.snapscreen.snapscreen_api.parser.extraction.lib.FeatureScoringSystem;
+import com.snapscreen.snapscreen_api.parser.read.group.extract.scoring.FeatureScoringSystem;
 
 import org.springframework.stereotype.Component;
 
