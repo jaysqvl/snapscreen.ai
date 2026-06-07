@@ -1,0 +1,12 @@
+target
+.git
+.idea
+.vscode
+*.iml
+*.log
+.env
+.env.*
+application-dev.properties
+src/main/resources/firebase-service-account.json
+Dockerfile
+.dockerignore

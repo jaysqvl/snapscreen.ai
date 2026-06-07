@@ -5,21 +5,18 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { FileText, Home, Plus, User, Edit, Trash, MoreVertical } from "lucide-react"
+import { FileText, Plus, Edit, Trash, MoreVertical } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { useCallback, useMemo, useState, useRef, Dispatch, SetStateAction } from "react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 

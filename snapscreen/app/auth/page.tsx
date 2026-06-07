@@ -1,8 +1,22 @@
 import { AuthForm } from "@/components/auth/auth-form"
+import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
+import Link from "next/link"
 
 export default function AuthPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col">
+      <Button
+        variant="ghost"
+        size="sm"
+        asChild
+        className="absolute left-4 top-4 z-10 md:left-6 md:top-6"
+      >
+        <Link href="/" aria-label="Back to home">
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Link>
+      </Button>
       <div className="flex flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">

@@ -45,22 +45,22 @@ export default function HomePage() {
                           <FileText className="mr-2 h-5 w-5 text-blue-500" />
                           <span className="text-sm">resume-software-engineer.pdf</span>
                         </div>
-                        <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                        <div className="rounded-full bg-emerald-100 px-2 py-1 text-xs text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
                           ATS Friendly
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <div className="bg-gray-100 p-2 rounded-md flex items-center justify-between">
+                        <div className="flex items-center justify-between rounded-md bg-muted p-2 text-muted-foreground">
                           <span>Hard Skills Match</span>
-                          <span className="font-semibold">8/10</span>
+                          <span className="font-semibold text-foreground">8/10</span>
                         </div>
-                        <div className="bg-gray-100 p-2 rounded-md flex items-center justify-between">
+                        <div className="flex items-center justify-between rounded-md bg-muted p-2 text-muted-foreground">
                           <span>Keyword Optimization</span>
-                          <span className="font-semibold">Good</span>
+                          <span className="font-semibold text-foreground">Good</span>
                         </div>
-                        <div className="bg-gray-100 p-2 rounded-md flex items-center justify-between">
+                        <div className="flex items-center justify-between rounded-md bg-muted p-2 text-muted-foreground">
                           <span>Format & Structure</span>
-                          <span className="font-semibold">Excellent</span>
+                          <span className="font-semibold text-foreground">Excellent</span>
                         </div>
                       </div>
                     </CardContent>

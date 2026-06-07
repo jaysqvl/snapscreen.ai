@@ -67,10 +67,10 @@ The platform performs various checks on resumes including:
 ## Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 15.x with App Router
+- **Framework**: Next.js 16.x with App Router
 - **UI**: React 19.x with Tailwind CSS 4.x
 - **Component Library**: Custom UI components built with Radix UI primitives (shadcn/ui)
-- **Authentication**: NextAuth.js with Firebase Authentication
+- **Authentication**: Firebase Authentication
 - **Styling**: TailwindCSS with class-variance-authority and clsx
 
 ### Backend
@@ -137,11 +137,20 @@ snapscreen.ai/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 20.x or higher
+- Node.js 24.16.0 recommended for frontend development (`snapscreen/.nvmrc`), Node.js 22.22.0 or newer supported
+- npm 11.16.0 or newer
 - Java 21 JDK
 - PostgreSQL database
 - AWS account (for S3 storage)
 - Firebase project (for authentication)
+
+### Local Development
+
+For day-to-day development with hot reload, see [docs/local-development.md](docs/local-development.md).
+
+### Docker Deployment
+
+For local/home-server deployment with Docker or a Portainer stack, see [docs/docker.md](docs/docker.md). The base stack runs the frontend and API without PostgreSQL or Redis; an optional compose overlay adds those dependencies when backend persistence or caching is wired in.
 
 ### Frontend Setup
 1. Navigate to the frontend directory:
