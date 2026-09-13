@@ -1,5 +1,28 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Dependency and application checks
+
+Use the Node/npm versions declared in `package.json`, then run:
+
+```bash
+npm ci
+npm run lint
+npm test
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
+
+Alternatively, use an existing Google Chrome installation with
+`PLAYWRIGHT_CHANNEL=chrome npm run test:e2e`.
+The browser suite starts the production standalone server with the same static
+asset layout as the Dockerfile. It covers routing, hydration, theme switching,
+FAQs, process tabs, auth-form state, and the existing new-scan dialog. External
+requests are blocked: these tests do not validate live Firebase authentication,
+resume processing, or production deployment. The dependency test guards the
+patched Next.js versions and directly exercises its path-escaping/cache-boundary
+guards with traversal and benign inputs. This is not a Windows RCE reproduction.
+
 ## Getting Started
 
 First, run the development server:
