@@ -1,0 +1,44 @@
+name: Dependency Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: snapscreen
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          cache: npm
+          cache-dependency-path: snapscreen/package-lock.json
+      - name: Select the declared package manager
+        run: npm install --global npm@11.16.0 --ignore-scripts
+      - name: Install the immutable dependency tree
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Dependency audit
+        run: npm audit --audit-level=low
+      - name: Lint
+        run: npm run lint
+      - name: Advisory and runtime boundary checks
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Production standalone browser tests
+        run: npm run test:e2e
