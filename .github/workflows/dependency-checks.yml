@@ -42,4 +42,3 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Production standalone browser tests
         run: npm run test:e2e
-
