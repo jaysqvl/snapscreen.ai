@@ -118,7 +118,7 @@ for (const jitless of [false, true]) {
 
 test("patched Sharp native processing preserves pixels and rejects malformed input", async () => {
   const sharp = require("sharp");
-  const version = require("sharp/package.json").version;
+  const version = sharp.versions.sharp;
   assert.equal(version, lock.packages["node_modules/sharp"].version);
   assert.match(version, /^\d+\.\d+\.\d+$/);
   const [major, minor, patch] = version.split(".").map(Number);
