@@ -116,6 +116,25 @@ for (const jitless of [false, true]) {
   }
 }
 
+test("patched Sharp native processing preserves pixels and rejects malformed input", async () => {
+  const sharp = require("sharp");
+  const version = require("sharp/package.json").version;
+  assert.equal(version, lock.packages["node_modules/sharp"].version);
+  assert.match(version, /^\d+\.\d+\.\d+$/);
+  const [major, minor, patch] = version.split(".").map(Number);
+  assert.ok(major > 0 || minor > 35 || (minor === 35 && patch >= 5));
+  const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  assert.equal(manifest.allowScripts[`sharp@${version}`], true);
+  const input = await sharp({
+    create: { width: 2, height: 2, channels: 3, background: { r: 255, g: 0, b: 0 } },
+  }).png().toBuffer();
+  const result = await sharp(input).resize(1, 1).raw().toBuffer({ resolveWithObject: true });
+  assert.equal(result.info.width, 1);
+  assert.equal(result.info.height, 1);
+  assert.deepEqual(result.data, Buffer.from([255, 0, 0]));
+  await assert.rejects(sharp(Buffer.from("malformed image fixture")).metadata(), /unsupported image format/i);
+});
+
 // Exercise the actual two upstream fix boundaries without writing cache files.
 // https://github.com/vercel/next.js/commit/968b9fcb26bdeb8e0a861a9df05361474666d51b
 test("route segments escape raw and encoded Windows separators", () => {
