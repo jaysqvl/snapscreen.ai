@@ -5,6 +5,7 @@ import { basename, join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 import { SourceMapConsumer, SourceMapGenerator } from "source-map-js";
+import { z } from "zod";
 
 const require = createRequire(import.meta.url);
 const lock = JSON.parse(readFileSync(new URL("../package-lock.json", import.meta.url), "utf8"));
@@ -67,6 +68,53 @@ test("every locked Next.js copy is outside the October advisory ranges", () => {
     assert.ok(isPatchedForOctober(dependency.version), `${path}: ${dependency.version}`);
   }
 });
+
+// The advisories published to the database on October 22 require newer fixes.
+function isPatchedForLateOctober(version) {
+  if (!/^\d+\.\d+\.\d+$/.test(version)) return false;
+  const [major, minor, patch] = version.split(".").map(Number);
+  if (major > 16) return true;
+  if (major === 16) return minor > 4 || (minor === 4 && patch >= 1);
+  return major === 15 && (minor > 5 || (minor === 5 && patch >= 28));
+}
+
+test("late-October advisory floor rejects affected and prerelease Next versions", () => {
+  for (const version of ["15.5.27", "16.3.8", "16.4.0", "16.4.1-canary.1"]) {
+    assert.equal(isPatchedForLateOctober(version), false, version);
+  }
+  for (const version of ["15.5.28", "16.4.1", "16.4.3"]) {
+    assert.equal(isPatchedForLateOctober(version), true, version);
+  }
+});
+
+test("all locked Next copies meet the late-October advisory floor", () => {
+  const copies = Object.entries(lock.packages).filter(([path]) => path.endsWith("node_modules/next"));
+  assert.ok(copies.length > 0);
+  for (const [path, dependency] of copies) {
+    assert.ok(isPatchedForLateOctober(dependency.version), `${path}: ${dependency.version}`);
+  }
+  assert.equal(require("next/package.json").version, lock.packages["node_modules/next"].version);
+});
+
+// Zod is dev-only ESLint tooling, not a new application input parser.
+for (const jitless of [false, true]) {
+  for (const [name, schema, oversized, valid] of [
+    ["array", () => z.array(z.number()).max(2), () => Array(1000).fill("invalid"), () => [1, 2]],
+    ["set", () => z.set(z.number()).max(2), () => new Set(Array.from({ length: 1000 }, (_, i) => `bad-${i}`)), () => new Set([1, 2])],
+    ["map", () => z.map(z.string(), z.number()).max(2), () => new Map(Array.from({ length: 1000 }, (_, i) => [i, "invalid"])), () => new Map([["one", 1], ["two", 2]])],
+  ]) {
+    test(`Zod ${name} bounds reject excessive element work and retain valid values (jitless=${jitless})`, () => {
+      const parser = z.object({ items: schema() });
+      const result = parser.safeParse({ items: oversized() }, { jitless });
+      assert.equal(result.success, false);
+      assert.equal(result.error.issues.length, 1);
+      assert.equal(result.error.issues[0].code, "too_big");
+      assert.deepEqual(result.error.issues[0].path, ["items"]);
+      const value = { items: valid() };
+      assert.deepEqual(parser.parse(value, { jitless }), value);
+    });
+  }
+}
 
 // Exercise the actual two upstream fix boundaries without writing cache files.
 // https://github.com/vercel/next.js/commit/968b9fcb26bdeb8e0a861a9df05361474666d51b
